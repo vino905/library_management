@@ -33,7 +33,7 @@ public class LibraryServiceImpl implements LibraryService {
     public void issueBook(Long bookId, Long userId) {
 
         User user = userRepository.findById(userId).orElseThrow(() -> new ResourceNotFoundException("User not found"));
-        Book book = libraryRepository.findById(bookId).orElseThrow(() -> new ResourceNotFoundException("Book not found"));
+        Book book = libraryRepository.findBookById(bookId);
         if (book.getAvailableCopies().equals(0)) {
             log.error("error occurred while issuing book. As book {} is not available", book.getTitle());
             throw new ResourceNotFoundException("Book is not available currently");
@@ -67,12 +67,12 @@ public class LibraryServiceImpl implements LibraryService {
 
     @Override
     public List<BookDto> getAllBooks() {
-        return libraryRepository.findAll().stream().map(bookMapper::toDto).toList();
+        return libraryRepository.getAllBooks().stream().map(bookMapper::toDto).toList();
     }
 
     @Override
     public List<BookDto> searchBooksByTitle(String title) {
-        return libraryRepository.findByTitleContainingIgnoreCase(title).stream().map(bookMapper::toDto).toList();
+        return libraryRepository.searchBooksByTitleOrAuthor(title).stream().map(bookMapper::toDto).toList();
     }
 
     @Override
