@@ -72,7 +72,7 @@ public class LibraryServiceImpl implements LibraryService {
 
     @Override
     public List<BookDto> searchBooksByTitle(String title) {
-        return libraryRepository.searchBooksByTitleOrAuthor(title).stream().map(bookMapper::toDto).toList();
+        return libraryRepository.searchBooksByTitle(title).stream().map(bookMapper::toDto).toList();
     }
 
     @Override
